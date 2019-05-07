@@ -75,9 +75,16 @@ npm manifest:
       }
     },
     "dependencies": {
+      "file-type": "^11.0.0",
+      "material-icons": "^0.3.1",
+      "materialize-css": "^1.0.0-rc.2",
+      "musicmetadata": "^2.0.5",
+      "read-chunk": "^3.2.0",
       "vue": "^2.5.16",
       "vue-electron": "^1.0.6",
-      "vue-router": "^3.0.1"
+      "vue-router": "^3.0.1",
+      "vuex": "^3.1.0",
+      "vuex-electron": "^1.0.3"
     },
     "devDependencies": {
       "ajv": "^6.5.0",
@@ -96,12 +103,12 @@ npm manifest:
       "del": "^3.0.0",
       "devtron": "^1.4.0",
       "electron": "^2.0.4",
+      "electron-builder": "^20.19.2",
       "electron-debug": "^1.5.0",
       "electron-devtools-installer": "^2.2.4",
-      "electron-builder": "^20.19.2",
-      "mini-css-extract-plugin": "0.4.0",
       "file-loader": "^1.1.11",
       "html-webpack-plugin": "^3.2.0",
+      "mini-css-extract-plugin": "0.4.0",
       "multispinner": "^0.2.1",
       "node-loader": "^0.6.0",
       "style-loader": "^0.21.0",
@@ -110,8 +117,8 @@ npm manifest:
       "vue-loader": "^15.2.4",
       "vue-style-loader": "^4.1.0",
       "vue-template-compiler": "^2.5.16",
-      "webpack-cli": "^3.0.8",
       "webpack": "^4.15.1",
+      "webpack-cli": "^3.0.8",
       "webpack-dev-server": "^3.1.4",
       "webpack-hot-middleware": "^2.22.2",
       "webpack-merge": "^4.1.3"
@@ -2378,6 +2385,17 @@ Lockfile:
       readable-stream "^2.2.2"
       typedarray "^0.0.6"
   
+  conf@^2.0.0:
+    version "2.2.0"
+    resolved "https://registry.yarnpkg.com/conf/-/conf-2.2.0.tgz#ee282efafc1450b61e205372041ad7d866802d9a"
+    integrity sha512-93Kz74FOMo6aWRVpAZsonOdl2I57jKtHrNmxhumehFQw4X8Sk37SohNY11PG7Q8Okta+UnrVaI006WLeyp8/XA==
+    dependencies:
+      dot-prop "^4.1.0"
+      env-paths "^1.0.0"
+      make-dir "^1.0.0"
+      pkg-up "^2.0.0"
+      write-file-atomic "^2.3.0"
+  
   configstore@^3.0.0:
     version "3.1.2"
     resolved "https://registry.yarnpkg.com/configstore/-/configstore-3.1.2.tgz#c6f25defaeef26df12dd33414b001fe81a543f8f"
@@ -2753,6 +2771,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.0.tgz#eb3913333458775cb84cd1a1fae062106bb87545"
     integrity sha1-6zkTMzRYd1y4TNGh+uBiEGu4dUU=
   
+  deep-equal@0.2.1:
+    version "0.2.1"
+    resolved "https://registry.yarnpkg.com/deep-equal/-/deep-equal-0.2.1.tgz#fad7a793224cbf0c3c7786f92ef780e4fc8cc878"
+    integrity sha1-+tenkyJMvww8d4b5LveA5PyMyHg=
+  
   deep-equal@^1.0.1:
     version "1.0.1"
     resolved "https://registry.yarnpkg.com/deep-equal/-/deep-equal-1.0.1.tgz#f5d260292b660e084eff4cdbc9f08ad3247448b5"
@@ -2762,6 +2785,11 @@ Lockfile:
     version "0.6.0"
     resolved "https://registry.yarnpkg.com/deep-extend/-/deep-extend-0.6.0.tgz#c4fa7c95404a17a9c3e8ca7e1537312b736330ac"
     integrity sha512-LOHxIOaPYdHlJRtCQfDIVZtfw/ufM8+rVj649RIHzcm/vGwQRXFt6OPqIFWsm2XEMrNIEtWR64sY1LEKD2vAOA==
+  
+  deepmerge@^2.1.1:
+    version "2.2.1"
+    resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-2.2.1.tgz#5d3ff22a01c00f645405a2fbc17d0778a1801170"
+    integrity sha512-R9hc1Xa/NOBi9WRVUWg19rl1UB7Tt4kuPd+thNJgFZoxXsTz7ncaPaeIm+40oSGuP33DfMb4sZt1QIGiJzC4EA==
   
   default-gateway@^4.2.0:
     version "4.2.0"
@@ -3141,6 +3169,13 @@ Lockfile:
       lazy-val "^1.0.4"
       mime "^2.4.0"
   
+  electron-store@^2.0.0:
+    version "2.0.0"
+    resolved "https://registry.yarnpkg.com/electron-store/-/electron-store-2.0.0.tgz#1035cca2a95409d1f54c7466606345852450d64a"
+    integrity sha512-1WCFYHsYvZBqDsoaS0Relnz0rd81ZkBAI0Fgx7Nq2UWU77rSNs1qxm4S6uH7TCZ0bV3LQpJFk7id/is/ZgoOPA==
+    dependencies:
+      conf "^2.0.0"
+  
   electron-to-chromium@^1.2.7, electron-to-chromium@^1.3.47:
     version "1.3.131"
     resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.131.tgz#205a0b7a276b3f56bc056f19178909243054252a"
@@ -3203,6 +3238,11 @@ Lockfile:
     version "1.1.2"
     resolved "https://registry.yarnpkg.com/entities/-/entities-1.1.2.tgz#bdfa735299664dfafd34529ed4f8522a275fea56"
     integrity sha512-f2LZMYl1Fzu7YSBKg+RoROelpOaNrcGmE9AZubeDfrCEia483oW4MI4VyFd5VNHIgQ/7qm1I0wUHK1eJnn2y2w==
+  
+  env-paths@^1.0.0:
+    version "1.0.0"
+    resolved "https://registry.yarnpkg.com/env-paths/-/env-paths-1.0.0.tgz#4168133b42bb05c38a35b1ae4397c8298ab369e0"
+    integrity sha1-QWgTO0K7BcOKNbGuQ5fIKYqzaeA=
   
   errno@^0.1.3, errno@~0.1.7:
     version "0.1.7"
@@ -3529,6 +3569,18 @@ Lockfile:
     dependencies:
       loader-utils "^1.0.2"
       schema-utils "^0.4.5"
+  
+  file-type@^11.0.0:
+    version "11.0.0"
+    resolved "https://registry.yarnpkg.com/file-type/-/file-type-11.0.0.tgz#576ca9ec099925b0c4df7e75d3be52696b62fb52"
+    integrity sha512-ixd0mHkDO8KJ1S+ANTM+cZoZgL+TB0txLMm9KjTndfOjFYuRmrUcOtmSEm+e9s7wrynZOvvRD/8LwMQ6a24Irg==
+  
+  filereader-stream@^0.2.0:
+    version "0.2.0"
+    resolved "https://registry.yarnpkg.com/filereader-stream/-/filereader-stream-0.2.0.tgz#16374a202715b640b666ecffd07089938e9ff11f"
+    integrity sha1-FjdKICcVtkC2Zuz/0HCJk46f8R8=
+    dependencies:
+      inherits "1.0.0"
   
   fill-range@^4.0.0:
     version "4.0.0"
@@ -4265,6 +4317,11 @@ Lockfile:
     dependencies:
       once "^1.3.0"
       wrappy "1"
+  
+  inherits@1.0.0:
+    version "1.0.0"
+    resolved "https://registry.yarnpkg.com/inherits/-/inherits-1.0.0.tgz#38e1975285bf1f7ba9c84da102bb12771322ac48"
+    integrity sha1-OOGXUoW/H3upyE2hArsSdxMirEg=
   
   inherits@2, inherits@2.0.3, inherits@^2.0.1, inherits@^2.0.3, inherits@~2.0.1, inherits@~2.0.3:
     version "2.0.3"
@@ -5176,6 +5233,16 @@ Lockfile:
     dependencies:
       object-visit "^1.0.0"
   
+  material-icons@^0.3.1:
+    version "0.3.1"
+    resolved "https://registry.yarnpkg.com/material-icons/-/material-icons-0.3.1.tgz#425e06e2448632d6249d6e1ffe2993682c5b171e"
+    integrity sha512-5Hbj76A6xDPcDZEbM4oxTknhWuMwGWnAHVLLPCEq9eVlcHb0fn4koU9ZeyMy1wjARtDEPAHfd5ZdL2Re5hf0zQ==
+  
+  materialize-css@^1.0.0-rc.2:
+    version "1.0.0-rc.2"
+    resolved "https://registry.yarnpkg.com/materialize-css/-/materialize-css-1.0.0-rc.2.tgz#b9e6b18f698c6ef77bb6b628d59147faf131eff5"
+    integrity sha512-FuQmSyq4Qv0ov7A2qXw0E6/jbQzSWx2P1pg2/XQDYTkkSc/GyiFAxu3fw9zgShwuTvyumEiw5jkxQWT9siqMBQ==
+  
   math-expression-evaluator@^1.2.14:
     version "1.2.17"
     resolved "https://registry.yarnpkg.com/math-expression-evaluator/-/math-expression-evaluator-1.2.17.tgz#de819fdbcd84dccd8fae59c6aeb79615b9d266ac"
@@ -5442,6 +5509,17 @@ Lockfile:
       lodash.clonedeep "^3.0.2"
       lodash.merge "^3.3.2"
       log-update "^1.0.2"
+  
+  musicmetadata@^2.0.5:
+    version "2.0.5"
+    resolved "https://registry.yarnpkg.com/musicmetadata/-/musicmetadata-2.0.5.tgz#7ae910d99fbaee05f2bd543aef10b6fbe1f37bd4"
+    integrity sha1-eukQ2Z+67gXyvVQ67xC2++Hze9Q=
+    dependencies:
+      deep-equal "0.2.1"
+      filereader-stream "^0.2.0"
+      is-stream "^1.1.0"
+      strtok2 "~1.0.0"
+      through "~2.3.4"
   
   nan@^2.12.1:
     version "2.13.2"
@@ -5847,7 +5925,7 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/p-try/-/p-try-1.0.0.tgz#cbc79cdbaf8fd4228e13f621f2b1a237c1b207b3"
     integrity sha1-y8ec26+P1CKOE/Yh8rGiN8GyB7M=
   
-  p-try@^2.0.0:
+  p-try@^2.0.0, p-try@^2.1.0:
     version "2.2.0"
     resolved "https://registry.yarnpkg.com/p-try/-/p-try-2.2.0.tgz#cb2868540e313d61de58fafbe35ce9004d5540e6"
     integrity sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==
@@ -6063,6 +6141,13 @@ Lockfile:
     integrity sha512-/E57AYkoeQ25qkxMj5PBOVgF8Kiu/h7cYS30Z5+R7WaiCCBfLq58ZI/dSeaEKb9WVJV5n/03QwrN3IeWIFllvw==
     dependencies:
       find-up "^3.0.0"
+  
+  pkg-up@^2.0.0:
+    version "2.0.0"
+    resolved "https://registry.yarnpkg.com/pkg-up/-/pkg-up-2.0.0.tgz#c819ac728059a461cab1c3889a2be3c49a004d7f"
+    integrity sha1-yBmscoBZpGHKscOImivjxJoATX8=
+    dependencies:
+      find-up "^2.1.0"
   
   plist@^3.0.1:
     version "3.0.1"
@@ -6585,6 +6670,14 @@ Lockfile:
       ini "~1.3.0"
       minimist "^1.2.0"
       strip-json-comments "~2.0.1"
+  
+  read-chunk@^3.2.0:
+    version "3.2.0"
+    resolved "https://registry.yarnpkg.com/read-chunk/-/read-chunk-3.2.0.tgz#2984afe78ca9bfbbdb74b19387bf9e86289c16ca"
+    integrity sha512-CEjy9LCzhmD7nUpJ1oVOE6s/hBkejlcJEgLQHVnQznOSilOPb+kpKktlLfFDK3/WP43+F80xkUTM2VOkYoSYvQ==
+    dependencies:
+      pify "^4.0.1"
+      with-open-file "^0.1.6"
   
   read-config-file@3.2.2:
     version "3.2.2"
@@ -7492,6 +7585,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
     integrity sha1-PFMZQukIwml8DsNEhYwobHygpgo=
   
+  strtok2@~1.0.0:
+    version "1.0.4"
+    resolved "https://registry.yarnpkg.com/strtok2/-/strtok2-1.0.4.tgz#df9ffb2e70a3336b4660e267ef0547e610275fc1"
+    integrity sha1-35/7LnCjM2tGYOJn7wVH5hAnX8E=
+  
   style-loader@^0.21.0:
     version "0.21.0"
     resolved "https://registry.yarnpkg.com/style-loader/-/style-loader-0.21.0.tgz#68c52e5eb2afc9ca92b6274be277ee59aea3a852"
@@ -7633,7 +7731,7 @@ Lockfile:
       readable-stream "~1.1.9"
       xtend "~2.1.1"
   
-  through@~2.3.6:
+  through@~2.3.4, through@~2.3.6:
     version "2.3.8"
     resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
     integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
@@ -8081,6 +8179,19 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.10.tgz#a72b1a42a4d82a721ea438d1b6bf55e66195c637"
     integrity sha512-ImThpeNU9HbdZL3utgMCq0oiMzAkt1mcgy3/E6zWC/G6AaQoeuFdsl9nDhTDU3X1R6FK7nsIUuRACVcjI+A2GQ==
   
+  vuex-electron@^1.0.3:
+    version "1.0.3"
+    resolved "https://registry.yarnpkg.com/vuex-electron/-/vuex-electron-1.0.3.tgz#c8ce0fd06ed9d3beb8881bce39bf76c9fcdc5611"
+    integrity sha512-fPv6nQa3yllKHy+8GT/xBMLw95slnLQRAV7Rddr1rNwc369vZvT6j9mQs7easwWgdk/Cnqqcq2Uay1SQE9KahQ==
+    dependencies:
+      deepmerge "^2.1.1"
+      electron-store "^2.0.0"
+  
+  vuex@^3.1.0:
+    version "3.1.0"
+    resolved "https://registry.yarnpkg.com/vuex/-/vuex-3.1.0.tgz#634b81515cf0cfe976bd1ffe9601755e51f843b9"
+    integrity sha512-mdHeHT/7u4BncpUZMlxNaIdcN/HIt1GsGG5LKByArvYG/v6DvHcOxvDCts+7SRdCoIRGllK8IMZvQtQXLppDYg==
+  
   watchpack@^1.5.0:
     version "1.6.0"
     resolved "https://registry.yarnpkg.com/watchpack/-/watchpack-1.6.0.tgz#4bc12c2ebe8aa277a71f1d3f14d685c7b446cd00"
@@ -8280,6 +8391,15 @@ Lockfile:
       define-property "^1.0.0"
       is-number "^3.0.0"
   
+  with-open-file@^0.1.6:
+    version "0.1.6"
+    resolved "https://registry.yarnpkg.com/with-open-file/-/with-open-file-0.1.6.tgz#0bc178ecab75f6baac8ae11c85e07445d690ea50"
+    integrity sha512-SQS05JekbtwQSgCYlBsZn/+m2gpn4zWsqpCYIrCHva0+ojXcnmUEPsBN6Ipoz3vmY/81k5PvYEWSxER2g4BTqA==
+    dependencies:
+      p-finally "^1.0.0"
+      p-try "^2.1.0"
+      pify "^4.0.1"
+  
   wordwrap@0.0.2:
     version "0.0.2"
     resolved "https://registry.yarnpkg.com/wordwrap/-/wordwrap-0.0.2.tgz#b79669bb42ecb409f83d583cad52ca17eaa1643f"
@@ -8305,7 +8425,7 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
     integrity sha1-tSQ9jz7BqjXxNkYFvA0QNuMKtp8=
   
-  write-file-atomic@^2.0.0:
+  write-file-atomic@^2.0.0, write-file-atomic@^2.3.0:
     version "2.4.2"
     resolved "https://registry.yarnpkg.com/write-file-atomic/-/write-file-atomic-2.4.2.tgz#a7181706dfba17855d221140a9c06e15fcdd87b9"
     integrity sha512-s0b6vB3xIVRLWywa6X9TOMA7k9zio0TMOsl9ZnDkliA/cfJlpHXAscj0gbHVJiTdIuAYpIyqS5GW91fqm6gG5g==

@@ -5,17 +5,29 @@
         </div>
 
         <div class="selection-box">
-            <button v-for="item in folders" v-bind:key="item.id" v-bind:title="item.name" @click="openFolder(item.path)">
-                <i class="material-icons">folder</i>               
-                <label>{{ item.name | trim(10) }}</label>
-            </button>
-            <button v-for="item in songs" v-bind:key="item.id" v-bind:title="item.title">
-                <img v-if="item.picture[0]" v-bind:src="retimage(item.picture[0].data,item.picture[0].format)" />
-                <v-icon v-else name="music"/>
-                <label>{{ item.title | trim(10) }}</label>
-            </button>
+            <div class="navigation-area">
+                <div>
+                    <button @click="back" title="Back"><i class="material-icons">arrow_back</i></button>
+                    <button @click="refresh" title="Back"><i class="material-icons">refresh</i></button>
+                </div>
+            </div>
+
+            <div class="display-area">
+                <button v-for="item in folders" v-bind:key="item.id" v-bind:title="item.name" @click="openFolder(item.path)">
+                    <i class="material-icons">folder</i>
+                    <label>{{ item.name | trim(10) }}</label>
+                </button>
+                <button v-for="item in songs" 
+                        v-bind:key="item.id"
+                        v-bind:title="item.title"
+                        @click="toggleSelect">
+                    <img v-if="item.picture[0]" v-bind:src="retimage(item.picture[0].data,item.picture[0].format)" />
+                    <i class="material-icons" v-else>music_note</i>
+                    <label>{{ item.title | trim(10) }}</label>
+                </button>
+            </div>
         </div>
-        <div class="classify-button" @click="lol">
+        <div class="classify-button">
             <a class="waves-effect waves-light btn"><i class="material-icons right">play_arrow</i>CLASSIFY</a>
         </div>
     </div>
@@ -62,9 +74,6 @@ export default {
         }
     },
     methods: {
-        lol(){
-            console.log(this.musicpath);
-        },
         refresh(musicpath){
             
             if(!musicpath){
@@ -102,8 +111,9 @@ export default {
                             if(  /audio/.test(mime) ){
                                 let readable = fs.createReadStream(song);
                                 mm(readable, (err, metadata) => {
-                                    metadata = { ...metadata, path:song };
+                                    metadata = { ...metadata, path:song, filename: file };
                                     musicfiles.push(metadata);
+                                    readable.close();
                                 });
                             }
                         }
@@ -122,6 +132,9 @@ export default {
         openFolder(folderPath){
             this.refresh(folderPath);
         }
+    },
+    beforeMount(){
+        this.refresh(this.musicpath);
     },
     filters:{
         trim: function(title,size){
@@ -172,4 +185,101 @@ export default {
 ::-webkit-scrollbar-track {
     background: #9a9c9a;
 }
+.navigation-area{
+    height: 10%;
+}
+
+.display-area{
+    height: 90%;
+    padding:10px;
+}
+
+/**  ==========================================================
+ *   .navigation-area : back and refresh buttons etc..
+ *   .display-area    : song cover images, folder buttons etc..
+ *   ==========================================================
+ */
+.navigation-area{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+.navigation-area button{
+    height: 40px;
+    width: 40px;
+    background:none;
+    border:none;
+    outline:none;
+    padding:0px;
+}
+
+.navigation-area button:hover, 
+.display-area button:hover{
+    background: rgba(183, 183, 183, 0.5);
+    box-shadow: 0px 0px 3px 0px black;
+}
+
+.navigation-area button:active,
+.display-area button:active{
+    background: rgba(183, 183, 183, 0.3);
+    box-shadow: 0px 0px 3px 0px inset;
+}
+
+.navigation-area button > .material-icons{
+    width:40px;
+    height:40px;
+    padding: 5px;
+    font-size: 30px;
+}
+
+.navigation-area button:active > .material-icons {
+    transform: translateY(1px);
+}
+
+.display-area label{
+    font-size: 15px;
+    color: rgb(255, 255, 255);
+    text-shadow: 1px 1px 1px black;
+}
+
+.display-area button{
+    border: none;
+    background: none;
+    outline:none;
+    padding: 0px;
+    display: flex;
+}
+
+.display-area button{
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    height: 100px;
+    width: 100px;
+    margin: 10px;
+}
+
+.display-area{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 10px;
+    max-height: 80%;
+    max-width: 99%;
+}
+
+#selection-view-grid button .material-icons {
+    height: 70px;
+    width: 70px;
+}
+
+.display-area button img{
+    width: 70px;
+    height: 70px;
+}
+
 </style>
