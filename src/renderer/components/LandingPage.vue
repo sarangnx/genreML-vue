@@ -1,7 +1,8 @@
 <template>
     <div id="content">
         <div id="wrapper">
-            <mode></mode>
+            <single-mode></single-mode>
+            <!-- <batch-mode></batch-mode> -->
         </div>
         <footer class="page-footer">
             <div class="status-bar">
@@ -24,6 +25,12 @@
 <script>
 export default {
     name: 'landing-page',
+    components:{
+        SingleMode: require('./LandingPage/single-mode').default
+    },
+    methods :{
+
+    }
 }
 </script>
 
@@ -34,6 +41,7 @@ export default {
 
 #wrapper{
     height:90%;
+    padding: 20px;
 }
 
 .page-footer{
@@ -66,45 +74,4 @@ export default {
     background: #a62626;
 }
 
-#single-mode,#batch-mode{
-    height: 100%;
-}
-
-.selection-box{
-    background: #404040;
-    height: 80%;
-    overflow-y: auto;
-}
-
-.title, .classify-button{
-    height:10%;
-}
-
-.classify-button{
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-}
-
-.title{
-    color:#c3c3c3;
-    font-weight: bold;
-    font-variant: petite-caps;
-}
-
-::-webkit-scrollbar {
-    width: 5px;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #000000;
-}
-
-::-webkit-scrollbar-track {
-    background: #9a9c9a;
-}
-/* Hide batch mode initially */
-#batch-mode{
-    display: none;
-}
 </style>

@@ -1,5 +1,7 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
 
+import store from '../renderer/store';
+
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
@@ -41,8 +43,9 @@ app.on('ready', () => {
     createWindow();
     mainWindow.on('ready-to-show',()=>{
         mainWindow.show();
-        mainWindow.webContents.send('musicpath',musicpath);
-    })
+        // mainWindow.webContents.send('musicpath',musicpath);
+    });
+    store.dispatch('setPath',musicpath);
 });
 
 app.on('window-all-closed', () => {
@@ -52,23 +55,3 @@ app.on('window-all-closed', () => {
 ipcMain.on('musicpath', (event) => {
     event.sender.send('musicpath',musicpath);
 })
-
-/**
- * Auto Updater
- *
- * Uncomment the following code below and install `electron-updater` to
- * support auto updating. Code Signing with a valid certificate is required.
- * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-electron-builder.html#auto-updating
- */
-
-/*
-import { autoUpdater } from 'electron-updater'
-
-autoUpdater.on('update-downloaded', () => {
-  autoUpdater.quitAndInstall()
-})
-
-app.on('ready', () => {
-  if (process.env.NODE_ENV === 'production') autoUpdater.checkForUpdates()
-})
- */
