@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, ipcMain } from 'electron'
 
 /**
  * Set `__static` path to static files in production
@@ -14,34 +14,43 @@ const winURL = process.env.NODE_ENV === 'development'
   : `file://${__dirname}/index.html`
 
 function createWindow () {
-  /**
-   * Initial window options
-   */
-  mainWindow = new BrowserWindow({
-    height: 563,
-    useContentSize: true,
-    width: 1000
-  })
+    /**
+    * Initial window options
+    */
+    mainWindow = new BrowserWindow({
+        width: 800,
+        minWidth:800,
+        height: 600,
+        minHeight:600,
+        center:true,
+        title: 'genreML',
+        autoHideMenuBar:true,
+        show: false
+    });
 
-  mainWindow.loadURL(winURL)
+    mainWindow.loadURL(winURL);
 
-  mainWindow.on('closed', () => {
-    mainWindow = null
-  })
+    mainWindow.on('closed', () => {
+        mainWindow = null
+    });
 }
 
-app.on('ready', createWindow)
+let musicpath = app.getPath('music');
+
+app.on('ready', () => {
+    createWindow();
+    mainWindow.on('ready-to-show',()=>{
+        mainWindow.show();
+        mainWindow.webContents.send('musicpath',musicpath);
+    })
+});
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
-})
+    app.quit();
+});
 
-app.on('activate', () => {
-  if (mainWindow === null) {
-    createWindow()
-  }
+ipcMain.on('musicpath', (event) => {
+    event.sender.send('musicpath',musicpath);
 })
 
 /**
