@@ -8,27 +8,31 @@
             <div class="navigation-area">
                 <div>
                     <button @click="back" title="Back"><i class="material-icons">arrow_back</i></button>
-                    <button @click="refresh" title="Back"><i class="material-icons">refresh</i></button>
+                    <button @click="refresh(pwd)" title="Back"><i class="material-icons">refresh</i></button>
                 </div>
             </div>
 
             <div class="display-area">
-                <button v-for="item in folders" v-bind:key="item.id" v-bind:title="item.name" @click="openFolder(item.path)">
+                <button v-for="item in folders" 
+                        v-bind:key="item.id" 
+                        v-bind:title="item.name" 
+                        @click="openFolder(item.path)">
                     <i class="material-icons">folder</i>
                     <label>{{ item.name | trim(10) }}</label>
                 </button>
                 <button v-for="item in songs" 
                         v-bind:key="item.id"
-                        v-bind:title="item.title"
-                        @click="toggleSelect">
+                        v-bind:title="item.title || item.filename"
+                        @click.self="toggleSelect($event)"
+                        v-bind:data-path="item.path">
                     <img v-if="item.picture[0]" v-bind:src="retimage(item.picture[0].data,item.picture[0].format)" />
                     <i class="material-icons" v-else>music_note</i>
                     <label>{{ item.title | trim(10) }}</label>
                 </button>
             </div>
         </div>
-        <div class="classify-button">
-            <a class="waves-effect waves-light btn"><i class="material-icons right">play_arrow</i>CLASSIFY</a>
+        <div class="classify-button" >
+            <button class="waves-effect waves-light btn"  @click="classify"><i class="material-icons right">play_arrow</i>CLASSIFY</button>
         </div>
     </div>
 </template>
@@ -50,6 +54,7 @@ export default {
             foldersArray: null,
             songsArray: null,
             pwd: null,
+            selectedList: null
         }   
     },
     computed:{
@@ -70,6 +75,14 @@ export default {
             },
             set: function(data){
                 this.songsArray = data;
+            }
+        },
+        selected: {
+            get: function(){
+                return this.selectedList;
+            },
+            set: function(el){
+                this.selectedList = el;
             }
         }
     },
@@ -131,6 +144,34 @@ export default {
         },
         openFolder(folderPath){
             this.refresh(folderPath);
+        },
+        toggleSelect(event){
+            let element = event.target;
+            
+            if(!this.selected){
+                element.classList.add("selected");
+                this.selected = element;
+            } else {
+                let el = this.selected;
+                if(el === element){
+                    el.classList.remove("selected");
+                    this.selected = null;
+                } else {
+                    el.classList.remove("selected");
+                    element.classList.add("selected");
+                    this.selected = element;
+                }
+                
+            }
+        },
+        classify(){
+            if(!this.selected){
+                return;
+            }
+
+            let el = this.selected;
+            let path = el.getAttribute('data-path');
+            console.log(path);
         }
     },
     beforeMount(){
@@ -233,6 +274,10 @@ export default {
     font-size: 30px;
 }
 
+.display-area button > .material-icons{
+    font-size: 70px;
+}
+
 .navigation-area button:active > .material-icons {
     transform: translateY(1px);
 }
@@ -282,4 +327,12 @@ export default {
     height: 70px;
 }
 
+/* This stops child elements from propagating events */
+button > * {
+  pointer-events: none;
+}
+
+.selected{
+    background: #232323!important;
+}
 </style>
