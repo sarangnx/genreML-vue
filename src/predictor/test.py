@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 import sys
 import os
-import spectrogram as sp.
+import spectrogram as sp
 # spectrograms = "/content/drive/My Drive/Data"
 # datasetPath = "/content/drive/My Drive/dataset"
 modelPath = os.path.abspath("src/predictor/model.h5")
@@ -12,7 +12,10 @@ img_width, img_height = 224, 224
 
 # image= spectrograms + "/Rock/03._Heathens_-_Twenty_One_Pilots_(320kbps)000.png"
 
-image = sys.argv[1]
+crop = "/tmp"
+mp3 = sys.argv[1]
+
+sp._cropSongs(mp3)
 
 model = load_model(modelPath)
 classes = ['Blues','Classical','Country','EDM','Folk','Funk','Hip-Hop','Indie','Jazz','Pop','RnB','Rock']
