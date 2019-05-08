@@ -32,6 +32,9 @@
             </div>
         </div>
         <div class="classify-button" >
+            <div id="output">
+
+            </div>
             <button class="waves-effect waves-light btn"  @click="classify"><i class="material-icons right">play_arrow</i>CLASSIFY</button>
         </div>
     </div>
@@ -46,6 +49,8 @@ const path = require('path');
 const mm = require('musicmetadata');
 const readChunk = require('read-chunk');
 const fileType = require('file-type');
+
+const {PythonShell} = require('python-shell');
 
 export default {
     name: 'single-mode',
@@ -170,8 +175,20 @@ export default {
             }
 
             let el = this.selected;
-            let path = el.getAttribute('data-path');
-            console.log(path);
+            let datapath = el.getAttribute('data-path');
+
+            let options = {
+                args: [datapath]
+            }
+            let script = path.join(__dirname,"../../../","predictor",'test.py');
+            let shell = new PythonShell(script,options);
+
+            let output = document.getElementById('output');
+
+            shell.on('message', (message) => {
+                output.innerHTML = message;
+            })
+
         }
     },
     beforeMount(){
@@ -334,5 +351,13 @@ button > * {
 
 .selected{
     background: #232323!important;
+}
+
+#output{
+    width:80%;
+    height:100%;
+    display: flex;
+    align-items: center;
+    color:white;
 }
 </style>
