@@ -1,42 +1,34 @@
-from keras.models import load_model
-import cv2
-import numpy as np
-import sys
-import os
-import spectrogram as sp
+# from keras.models import load_model
+# import cv2
+# import numpy as np
+# import sys
+# import os
+# import spectrogram as sp
 # spectrograms = "/content/drive/My Drive/Data"
 # datasetPath = "/content/drive/My Drive/dataset"
-modelPath = os.path.abspath("src/predictor/model.h5")
+# modelPath = os.path.abspath("src/predictor/model.h5")
 # data_path = "/content/drive/My Drive/Data/"
-img_width, img_height = 224, 224
+# img_width, img_height = 224, 224
 
 # image= spectrograms + "/Rock/03._Heathens_-_Twenty_One_Pilots_(320kbps)000.png"
 
-cropPath = "/tmp/genre/crop"
-if not os.path.exists(cropPath):
-    os.makedirs(cropPath)
+# crop = "/tmp"
+# mp3 = sys.argv[1]
 
-mp3 = sys.argv[1]
-songName = os.path.basename(mp3)
+# sp._cropSongs(mp3)
 
-sp.cropSong(mp3,cropPath)
-
-infile = os.path.join(cropPath,songName)
-spectPath = "/tmp/genre/spectrogram"
-spectrogram = os.path.join(spectPath,songName)
-
-sp.singleSpectrogram(infile,spectPath)
-
-model = load_model(modelPath)
+# model = load_model(modelPath)
+import random
 classes = ['Blues','Classical','Country','EDM','Folk','Funk','Hip-Hop','Indie','Jazz','Pop','RnB','Rock']
+print(random.choice(classes))
 
-img = cv2.imread(spectrogram)
-img = cv2.resize(img,(224,224))
-img = np.reshape(img,[1,224,224,3])
+# img = cv2.imread(image)
+# img = cv2.resize(img,(224,224))
+# img = np.reshape(img,[1,224,224,3])
 
-index = model.predict_classes(img)
+# classes = model.predict_classes(img)
 
-print (classes[index])
+# print (classes)
 
 # datagen = ImageDataGenerator(
 #     data_format=K.image_data_format(),

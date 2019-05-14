@@ -30,6 +30,18 @@ def _cropSongs(inpath,outpath):
         subprocess.call(cmd,shell=True)
 
 
+def cropSong(infile,outpath):
+    file = os.path.basename(infile)
+    outfile = os.path.join(outpath,file)
+
+    if not os.path.isdir(outpath):
+        # If genre folder doesn't exist create one.
+        os.makedirs(outpath)
+    # crop the song to 90 seconds
+    cmd = "ffmpeg -y -t 30 -i \"{}\" -map 0:a -c copy  -map_metadata -1 \"{}\"".format(infile,outfile)
+    subprocess.call(cmd,shell=True)
+
+
 # Slice the songs to 30s windows
 # inpath - path to cropped files directory
 # outpath - path to slices directory
@@ -100,6 +112,24 @@ def _convertToSpectrogram(inpath,outpath):
         plt.close()
         
 
+def singleSpectrogram(songfile,outpath):
+    song = os.path.basename(songfile)
+    plt.figure(figsize=[10,4],frameon=False)
+    plt.axis("off")
+    plt.axes([0., 0., 1., 1.], frameon=False, xticks=[], yticks=[])
+
+    sig, fs = librosa.load(songfile, mono=True)
+    S = librosa.feature.melspectrogram(y=sig, sr=fs)
+    librosa.display.specshow(librosa.power_to_db(S, ref=np.max), y_axis='mel', fmax=8000, x_axis='time')
+
+    name = re.sub(".mp3",".png",song)
+    outfile = os.path.join(outpath,name)
+
+    if not os.path.isdir(outpath):
+        # If genre folder doesn't exist create one.
+        os.makedirs(outpath)
+    plt.savefig(outfile, bbox_inches=None, pad_inches=0,frameon=None)
+    plt.close()
 
 # This is the method that should be called to 
 # create spectrograms from the segments
