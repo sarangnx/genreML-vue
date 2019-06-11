@@ -50,8 +50,6 @@ const mm = require('musicmetadata');
 const readChunk = require('read-chunk');
 const fileType = require('file-type');
 
-const {PythonShell} = require('python-shell');
-
 export default {
     name: 'single-mode',
     data: () => {
@@ -175,19 +173,11 @@ export default {
             }
 
             let el = this.selected;
-            let datapath = el.getAttribute('data-path');
-
-            let options = {
-                args: ['single',datapath]
-            }
-            let script = path.join(__dirname,"../../../","predictor",'predict.py');
-            let shell = new PythonShell(script,options);
+            let songpath = el.getAttribute('data-path');
 
             let output = document.getElementById('output');
 
-            shell.on('message', (message) => {
-                output.innerHTML = message;
-            })
+            ipcRenderer.send('mode:single',songpath);
 
         }
     },
