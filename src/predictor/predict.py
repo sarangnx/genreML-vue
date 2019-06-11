@@ -7,41 +7,40 @@ import spectrogram as sp
 import shutil
 
 modelPath = os.path.abspath("src/predictor/model.h5")
+model = load_model(modelPath)
+classes = ['Blues','Classical','Country','EDM','Folk','Funk','Hip-Hop/Rap','Indie','Jazz','Rock']
 
 img_width, img_height = 224, 224
 
-def makeDirectories(mode = "single"):
-    # PATH TO SAVE THE 30s CROPPED SONG
-    cropPath = "/tmp/genre/crop"
-    # PATH TO SAVE THE 3s SEGMENTS
-    segPath = "/tmp/genre/segment"
-    # PATH TO SAVE THE SPECTROGRAMS
-    spectPath = "/tmp/genre/spectrogram"
+# Function to Read an Image as a Numpy Array 
+def readImage(imagePath):
+    img = cv2.imread(imagePath)
+    img = cv2.resize(img,(img_width,img_height))
+    img = np.reshape(img,[1,img_width,img_height,3])
+    return img
 
-    # DELETE ALL DIRECTORIES
-    if os.path.exists("/tmp/genre"):
-        shutil.rmtree("/tmp/genre")
+# PATH TO SAVE THE 30s CROPPED SONG
+cropPath = "/tmp/genre/crop"
+# PATH TO SAVE THE 3s SEGMENTS
+segPath = "/tmp/genre/segment"
+# PATH TO SAVE THE SPECTROGRAMS
+spectPath = "/tmp/genre/spectrogram"
 
-    # CREATE DIRECTORIES
-    os.makedirs(cropPath)    
-    os.makedirs(spectPath)
-    os.makedirs(segPath)
+# DELETE ALL DIRECTORIES
+if os.path.exists("/tmp/genre"):
+    shutil.rmtree("/tmp/genre")
 
-def singleMode():
-    sp.cropSong(mp3,cropPath)
+# CREATE DIRECTORIES
+os.makedirs(cropPath)    
+os.makedirs(spectPath)
+os.makedirs(segPath)
 
-    infile = os.path.join(cropPath,songName)
-    
-    spectrogram = os.path.join(spectPath,songName)
+def singleMode(songFile):
 
-    sp.singleSpectrogram(infile,spectPath)
-
-    model = load_model(modelPath)
-    classes = ['Blues','Classical','Country','EDM','Folk','Funk','Hip-Hop','Indie','Jazz','Rock']
-
-    img = cv2.imread(spectrogram)
-    img = cv2.resize(img,(224,224))
-    img = np.reshape(img,[1,224,224,3])
+    # CROP -> SEGMENT -> SPECTROGRAM
+    sp.cropSong(songFile,cropPath)
+    sp.sliceSongs(cropPath,segPath)
+    sp.convertToSpectrogram(segPath,spectPath)
 
     percentage = model.predict(img)
     index = model.predict_classes(img)
