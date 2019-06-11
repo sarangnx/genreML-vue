@@ -1,4 +1,7 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
+const {PythonShell} = require('python-shell');
+const socketio = require('socket.io-client');
+const path = require('path');
 
 import store from '../renderer/store';
 
@@ -55,3 +58,25 @@ app.on('window-all-closed', () => {
 ipcMain.on('musicpath', (event) => {
     event.sender.send('musicpath',musicpath);
 })
+
+/**
+ * ===========================
+ * Run python SocketIO server
+ * ===========================
+ */
+let script = path.join(__dirname,"../","predictor",'server.py');
+
+let shell = new PythonShell(script);
+
+shell.on('message', (message) => {
+    console.log(message);
+});
+
+let client = socketio('http://localhost:8000');
+
+client.on('connect', () => {
+    console.log('connected');
+})
+ipcMain.on('mode:single', (event,data) => {
+    console.log(data)
+});

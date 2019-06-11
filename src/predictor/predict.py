@@ -4,40 +4,62 @@ import numpy as np
 import sys
 import os
 import spectrogram as sp
+import shutil
 
 modelPath = os.path.abspath("src/predictor/model.h5")
+model = load_model(modelPath)
+classes = ['Blues','Classical','Country','EDM','Folk','Funk','Hip-Hop/Rap','Indie','Jazz','Rock']
 
 img_width, img_height = 224, 224
 
+# Function to Read an Image as a Numpy Array 
+def readImage(imagePath):
+    img = cv2.imread(imagePath)
+    img = cv2.resize(img,(img_width,img_height))
+    img = np.reshape(img,[1,img_width,img_height,3])
+    return img
+
 # PATH TO SAVE THE 30s CROPPED SONG
-# cropPath = "/tmp/genre/crop"
-# if not os.path.exists(cropPath):
-#     os.makedirs(cropPath)
-# # PATH TO SAVE THE SPECTROGRAMS
-# spectPath = "/tmp/genre/spectrogram"
-# if not os.path.exists(spectPath):
-#     os.makedirs(spectPath)
+cropPath = "/tmp/genre/crop"
+# PATH TO SAVE THE 3s SEGMENTS
+segPath = "/tmp/genre/segment"
+# PATH TO SAVE THE SPECTROGRAMS
+spectPath = "/tmp/genre/spectrogram"
 
-def singleMode():
-    sp.cropSong(mp3,cropPath)
+# DELETE ALL DIRECTORIES
+if os.path.exists("/tmp/genre"):
+    shutil.rmtree("/tmp/genre")
 
-    infile = os.path.join(cropPath,songName)
+# CREATE DIRECTORIES
+os.makedirs(cropPath)    
+os.makedirs(spectPath)
+os.makedirs(segPath)
+
+def singleMode(songFile):
+
+    # CROP -> SEGMENT -> SPECTROGRAM
+    sp.cropSong(songFile,cropPath)
+    sp.sliceSongs(cropPath,segPath)
+    sp.convertToSpectrogram(segPath,spectPath)
+
+    files = os.listdir(spectPath)
+    files = [file for file in files if file.endswith(".png")]
+
+    prediction_percentage = []
+    predicted_class = []
+
+    for file in files:
+        
+        imageFile = os.path.join(spectPath,file)
+        image = readImage(imageFile)
+
+        percentage = model.predict(img)
+        prediction_percentage.append(percentage)
     
-    spectrogram = os.path.join(spectPath,songName)
-
-    sp.singleSpectrogram(infile,spectPath)
-
-    model = load_model(modelPath)
-    classes = ['Blues','Classical','Country','EDM','Folk','Funk','Hip-Hop','Indie','Jazz','Rock']
-
-    img = cv2.imread(spectrogram)
-    img = cv2.resize(img,(224,224))
-    img = np.reshape(img,[1,224,224,3])
-
-    percentage = model.predict(img)
-    index = model.predict_classes(img)
-
-    print(classes[index])
+        index = model.predict_classes(img)
+        predicted_class.append(index)
+    
+    return predict_classes, prediction_percentage
 
 
 # SINGLE / BATCH MODE SELECTION
