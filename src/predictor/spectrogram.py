@@ -39,7 +39,7 @@ def cropSong(infile,outpath):
     cmd = "ffmpeg -y -t 30 -i \"{}\" -map 0:a -c copy  -map_metadata -1 \"{}\"".format(infile,outfile)
     subprocess.call(cmd,shell=True)
 
-# Slice the songs to 30s windows
+# Slice the songs to 3s windows
 # inpath - path to cropped files directory
 # outpath - path to slices directory
 def sliceSongs(inpath,outpath):
@@ -63,6 +63,9 @@ def sliceSongs(inpath,outpath):
         subprocess.call(cmd,shell=True)
     cleanup(outpath)
 
+# Slice a song to 3s windows
+# inpath - path to cropped files directory
+# outpath - path to slices directory
 def sliceSong(infile,outpath):
     file = basename(infile)
 
@@ -81,7 +84,7 @@ def sliceSong(infile,outpath):
     cleanup(outpath)
 
 # Convert segments into spectrograms
-def convertToSpectrogram(inpath,outpath,genre):
+def convertToSpectrogram(inpath,outpath):
 
     files = os.listdir(inpath)
     files = [file for file in files if file.endswith(".mp3")]
