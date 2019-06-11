@@ -63,6 +63,23 @@ def sliceSongs(inpath,outpath):
         subprocess.call(cmd,shell=True)
     cleanup(outpath)
 
+def sliceSong(infile,outpath):
+    file = basename(infile)
+
+    name = re.sub(".mp3","",file)
+    name = re.sub(" ","_",name)
+
+    outfile = os.path.join(outpath,name)
+
+    if not os.path.isdir(outpath):
+        # If genre folder doesn't exist create one.
+        os.makedirs(outpath)
+        
+    # Command to create segments of duration 10s
+    cmd = "ffmpeg -y -i \"{}\" -f segment -segment_time 3 -c copy \"{}%05d.mp3\"".format(infile,outfile)
+    subprocess.call(cmd,shell=True)
+    cleanup(outpath)
+
 # Convert segments into spectrograms
 def convertToSpectrogram(inpath,outpath,genre):
 
