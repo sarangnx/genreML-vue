@@ -25,6 +25,19 @@ def cropSongs(inpath,outpath):
         cmd = "ffmpeg -y -t 30 -i \"{}\" -map 0:a -c copy  -map_metadata -1 \"{}\"".format(infile,outfile)
         subprocess.call(cmd,shell=True)
 
+# Function to crop 90 seconds out of a song
+# inpath - path to raw files directory
+# outpath - path to cropped directory
+def cropSong(infile,outpath):
+    file = basename(infile)
+    outfile = os.path.join(outpath,file)
+
+    if not os.path.isdir(outpath):
+        # If genre folder doesn't exist create one.
+        os.makedirs(outpath)
+    # crop the song to 90 seconds
+    cmd = "ffmpeg -y -t 30 -i \"{}\" -map 0:a -c copy  -map_metadata -1 \"{}\"".format(infile,outfile)
+    subprocess.call(cmd,shell=True)
 
 # Slice the songs to 30s windows
 # inpath - path to cropped files directory
