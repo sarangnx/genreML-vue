@@ -42,10 +42,24 @@ def singleMode(songFile):
     sp.sliceSongs(cropPath,segPath)
     sp.convertToSpectrogram(segPath,spectPath)
 
-    percentage = model.predict(img)
-    index = model.predict_classes(img)
+    files = os.listdir(spectPath)
+    files = [file for file in files if file.endswith(".png")]
 
-    print(classes[index])
+    prediction_percentage = []
+    predicted_class = []
+
+    for file in files:
+        
+        imageFile = os.path.join(spectPath,file)
+        image = readImage(imageFile)
+
+        percentage = model.predict(img)
+        prediction_percentage.append(percentage)
+    
+        index = model.predict_classes(img)
+        predicted_class.append(index)
+    
+    return predict_classes, prediction_percentage
 
 
 # SINGLE / BATCH MODE SELECTION
