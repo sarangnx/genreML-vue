@@ -178,9 +178,9 @@ export default {
             let datapath = el.getAttribute('data-path');
 
             let options = {
-                args: [datapath]
+                args: ['single',datapath]
             }
-            let script = path.join(__dirname,"../../../","predictor",'test.py');
+            let script = path.join(__dirname,"../../../","predictor",'predict.py');
             let shell = new PythonShell(script,options);
 
             let output = document.getElementById('output');
