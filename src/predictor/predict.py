@@ -4,19 +4,28 @@ import numpy as np
 import sys
 import os
 import spectrogram as sp
+import shutil
 
 modelPath = os.path.abspath("src/predictor/model.h5")
 
 img_width, img_height = 224, 224
 
-# PATH TO SAVE THE 30s CROPPED SONG
-# cropPath = "/tmp/genre/crop"
-# if not os.path.exists(cropPath):
-#     os.makedirs(cropPath)
-# # PATH TO SAVE THE SPECTROGRAMS
-# spectPath = "/tmp/genre/spectrogram"
-# if not os.path.exists(spectPath):
-#     os.makedirs(spectPath)
+def makeDirectories(mode = "single"):
+    # PATH TO SAVE THE 30s CROPPED SONG
+    cropPath = "/tmp/genre/crop"
+    # PATH TO SAVE THE 3s SEGMENTS
+    segPath = "/tmp/genre/segment"
+    # PATH TO SAVE THE SPECTROGRAMS
+    spectPath = "/tmp/genre/spectrogram"
+
+    # DELETE ALL DIRECTORIES
+    if os.path.exists("/tmp/genre"):
+        shutil.rmtree("/tmp/genre")
+
+    # CREATE DIRECTORIES
+    os.makedirs(cropPath)    
+    os.makedirs(spectPath)
+    os.makedirs(segPath)
 
 def singleMode():
     sp.cropSong(mp3,cropPath)
