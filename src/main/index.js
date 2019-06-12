@@ -1,9 +1,14 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
 const {PythonShell} = require('python-shell');
-const socketio = require('socket.io-client');
+// const socketio = require('socket.io-client');
 const path = require('path');
+const net = require('net')
+const zeromq = require('zeromq');
 
 import store from '../renderer/store';
+
+const HOST = '127.0.0.1';
+const PORT = '5555';
 
 /**
  * Set `__static` path to static files in production
@@ -57,7 +62,11 @@ app.on('window-all-closed', () => {
 
 ipcMain.on('musicpath', (event) => {
     event.sender.send('musicpath',musicpath);
-})
+});
+
+process.on('uncaughtException', function (err) {
+    console.log(err);
+}); 
 
 /**
  * ===========================
@@ -68,15 +77,25 @@ let script = path.join(__dirname,"../","predictor",'server.py');
 
 let shell = new PythonShell(script);
 
-shell.on('message', (message) => {
-    console.log(message);
-});
-
 let client = socketio('http://localhost:8000');
+
+shell.on('message', (message) => {
+    console.log(message)
+});
 
 client.on('connect', () => {
     console.log('connected');
-})
+    // client.emit('my_message','message',(data) => {
+    //     console.log(data);
+    // });
+});
+
 ipcMain.on('mode:single', (event,data) => {
     console.log(data)
+    // client.send(data);
+    client.write('test data');
 });
+
+client.on('data', (data) => {
+    console.log(data);
+})
