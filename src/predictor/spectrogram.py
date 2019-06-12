@@ -29,7 +29,7 @@ def cropSongs(inpath,outpath):
 # inpath - path to raw files directory
 # outpath - path to cropped directory
 def cropSong(infile,outpath):
-    file = basename(infile)
+    file = os.path.basename(infile)
     outfile = os.path.join(outpath,file)
 
     if not os.path.isdir(outpath):
@@ -67,7 +67,7 @@ def sliceSongs(inpath,outpath):
 # inpath - path to cropped files directory
 # outpath - path to slices directory
 def sliceSong(infile,outpath):
-    file = basename(infile)
+    file = os.path.basename(infile)
 
     name = re.sub(".mp3","",file)
     name = re.sub(" ","_",name)
