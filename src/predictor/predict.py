@@ -5,8 +5,10 @@ import sys
 import os
 import spectrogram as sp
 import shutil
+import threading
 
-modelPath = os.path.abspath("model.h5")
+# modelPath = os.path.abspath("/src/predictor/model.h5")
+modelPath = "src/predictor/model.h5"
 model = load_model(modelPath)
 classes = ['Blues','Classical','Country','EDM','Folk','Funk','Hip-Hop/Rap','Indie','Jazz','Rock']
 
@@ -40,27 +42,35 @@ def singleMode(songFile):
     folders()
     # CROP -> SEGMENT -> SPECTROGRAM
     sp.cropSong(songFile,cropPath)
-    # sp.sliceSongs(cropPath,segPath)
-    sp.convertToSpectrogram(cropPath,spectPath)
-    return "done"
-    # files = os.listdir(spectPath)
-    # files = [file for file in files if file.endswith(".png")]
+    sp.sliceSongs(cropPath,segPath)
 
-    # prediction_percentage = []
-    # predicted_class = []
+    # ===================================================
+    # Call convertToSpectrogram using THREADS instead of
+    # directly calling them, to avoid Deadlock when using 
+    # librosa.load().
+    # ===================================================
+    x = threading.Thread(target=sp.convertToSpectrogram, args=(segPath,spectPath))
+    x.start()
+    x.join()
 
-    # for file in files:
+    files = os.listdir(spectPath)
+    files = [file for file in files if file.endswith(".png")]
+
+    prediction_percentage = []
+    predicted_class = []
+
+    for file in files:
         
-    #     imageFile = os.path.join(spectPath,file)
-    #     image = readImage(imageFile)
+        imageFile = os.path.join(spectPath,file)
+        image = readImage(imageFile)
 
-    #     percentage = model.predict(img)
-    #     prediction_percentage.append(percentage)
+        percentage = model.predict(image)
+        prediction_percentage.append(percentage.flatten().tolist())
     
-    #     index = model.predict_classes(img)
-    #     predicted_class = index
+        index = model.predict_classes(image)
+        predicted_class.append(np.asscalar(index))
     
-    # return predicted_class, prediction_percentage
+    return predicted_class, prediction_percentage
 
 def batchMode():
     pass
