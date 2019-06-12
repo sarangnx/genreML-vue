@@ -19,10 +19,9 @@ yarn build
 
 
 # Dependencies
-> ZeroMQ
+> socket.io
 ```bash
-sudo apt-get install libzmq3-dev
-pip3 install pyzmq
+pip3 install python-socketio
 ```
 
 > ML Dependencies
