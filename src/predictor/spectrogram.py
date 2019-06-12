@@ -1,6 +1,10 @@
 import subprocess
 import os
 import re
+
+import matplotlib
+matplotlib.use('AGG')
+
 import matplotlib.pyplot as plt
 import librosa
 import librosa.display
@@ -36,7 +40,7 @@ def cropSong(infile,outpath):
         # If genre folder doesn't exist create one.
         os.makedirs(outpath)
     # crop the song to 90 seconds
-    cmd = "ffmpeg -loglevel quiet  -y -ss 10 -t 3 -i \"{}\" -map 0:a -c copy  -map_metadata -1 \"{}\"".format(infile,outfile)
+    cmd = "ffmpeg -loglevel quiet  -y -ss 10 -t 30 -i \"{}\" -map 0:a -c copy  -map_metadata -1 \"{}\"".format(infile,outfile)
     subprocess.call(cmd,shell=True)
 
 # Slice the songs to 3s windows
@@ -85,31 +89,30 @@ def sliceSong(infile,outpath):
 
 # Convert segments into spectrograms
 def convertToSpectrogram(inpath,outpath):
-    print("1")
+
     files = os.listdir(inpath)
     files = [file for file in files if file.endswith(".mp3")]
-    print("2")
+
     for song in files:
-        print(song)
+        
         plt.figure(figsize=[5,5],frameon=False)
         plt.axis("off")
         plt.axes([0., 0., 1., 1.], frameon=False, xticks=[], yticks=[])
-        print("3")
+
         songfile = os.path.join(inpath,song)
         sig, fs = librosa.load(songfile, mono=True)
         S = librosa.feature.melspectrogram(y=sig, sr=fs)
         librosa.display.specshow(librosa.power_to_db(S, ref=np.max), y_axis='mel', fmax=8000, x_axis='time')
-        print("4")
+
         name = re.sub(".mp3",".png",song)
         outfile = os.path.join(outpath,name)
-        print("5")
+
         if not os.path.isdir(outpath):
             # If genre folder doesn't exist create one.
             os.makedirs(outpath)
-        print("6")
+
         plt.savefig(outfile, bbox_inches=None, pad_inches=0,frameon=None)
         plt.close()
-        print("7")
 
 # Unwanted 4th file is created for some songs
 # Files having only <1kb of size, and ends with 3.mp3
