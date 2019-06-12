@@ -2,7 +2,6 @@ import { app, BrowserWindow, ipcMain } from 'electron'
 const {PythonShell} = require('python-shell');
 // const socketio = require('socket.io-client');
 const path = require('path');
-const net = require('net')
 const zeromq = require('zeromq');
 
 import store from '../renderer/store';
@@ -75,11 +74,11 @@ process.on('uncaughtException', function (err) {
  */
 let script = path.join(__dirname,"../","predictor",'server.py');
 
-// let shell = new PythonShell(script);
+let shell = new PythonShell(script);
 
-// shell.on('message', (message) => {
-//     console.log(message)
-// });
+shell.on('message', (message) => {
+    console.log(message)
+});
 
 let client = zeromq.socket('req');
 
