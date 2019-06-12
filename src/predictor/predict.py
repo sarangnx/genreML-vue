@@ -61,13 +61,8 @@ def singleMode(songFile):
     
     return predict_classes, prediction_percentage
 
-
-# SINGLE / BATCH MODE SELECTION
-mode = sys.argv[1]
-
-# SONG PATH PASSED AS ARGUMENT
-mp3 = sys.argv[2]
-songName = os.path.basename(mp3)
+def batchMode():
+    pass
 # ====================================================================================
 
 # datagen = ImageDataGenerator(
