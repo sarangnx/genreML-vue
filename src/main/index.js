@@ -77,18 +77,13 @@ let script = path.join(__dirname,"../","predictor",'server.py');
 
 let shell = new PythonShell(script);
 
-let client = socketio('http://localhost:8000');
-
 shell.on('message', (message) => {
     console.log(message)
 });
 
-client.on('connect', () => {
-    console.log('connected');
-    // client.emit('my_message','message',(data) => {
-    //     console.log(data);
-    // });
-});
+let client = zeromq.socket('req');
+
+client.connect(`tcp://localhost:${PORT}`);
 
 ipcMain.on('mode:single', (event,data) => {
     console.log(data)
@@ -96,6 +91,8 @@ ipcMain.on('mode:single', (event,data) => {
     client.write('test data');
 });
 
-client.on('data', (data) => {
-    console.log(data);
-})
+client.on('message', (data) => {
+    console.log(data.toString());
+});
+
+client.send("sreekutty")
