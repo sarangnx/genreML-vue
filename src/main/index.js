@@ -86,13 +86,14 @@ let client = zeromq.socket('req');
 client.connect(`tcp://localhost:${PORT}`);
 
 ipcMain.on('mode:single', (event,data) => {
-    console.log(data)
-    // client.send(data);
-    client.write('test data');
+    let req = {
+        mode: 'single',
+        data: data
+    }
+    client.send(JSON.stringify(req));
 });
 
 client.on('message', (data) => {
     console.log(data.toString());
 });
 
-client.send("sreekutty")
