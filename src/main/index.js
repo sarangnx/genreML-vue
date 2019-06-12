@@ -75,11 +75,11 @@ process.on('uncaughtException', function (err) {
  */
 let script = path.join(__dirname,"../","predictor",'server.py');
 
-let shell = new PythonShell(script);
+// let shell = new PythonShell(script);
 
-shell.on('message', (message) => {
-    console.log(message)
-});
+// shell.on('message', (message) => {
+//     console.log(message)
+// });
 
 let client = zeromq.socket('req');
 

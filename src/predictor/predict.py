@@ -6,7 +6,7 @@ import os
 import spectrogram as sp
 import shutil
 
-modelPath = os.path.abspath("src/predictor/model.h5")
+modelPath = os.path.abspath("model.h5")
 model = load_model(modelPath)
 classes = ['Blues','Classical','Country','EDM','Folk','Funk','Hip-Hop/Rap','Indie','Jazz','Rock']
 
@@ -26,40 +26,41 @@ segPath = "/tmp/genre/segment"
 # PATH TO SAVE THE SPECTROGRAMS
 spectPath = "/tmp/genre/spectrogram"
 
-# DELETE ALL DIRECTORIES
-if os.path.exists("/tmp/genre"):
-    shutil.rmtree("/tmp/genre")
+def folders():
+    # DELETE ALL DIRECTORIES
+    if os.path.exists("/tmp/genre"):
+        shutil.rmtree("/tmp/genre")
 
-# CREATE DIRECTORIES
-os.makedirs(cropPath)    
-os.makedirs(spectPath)
-os.makedirs(segPath)
+    # CREATE DIRECTORIES
+    os.makedirs(cropPath)    
+    os.makedirs(spectPath)
+    os.makedirs(segPath)
 
 def singleMode(songFile):
-
+    folders()
     # CROP -> SEGMENT -> SPECTROGRAM
     sp.cropSong(songFile,cropPath)
-    sp.sliceSongs(cropPath,segPath)
-    sp.convertToSpectrogram(segPath,spectPath)
+    # sp.sliceSongs(cropPath,segPath)
+    sp.convertToSpectrogram(cropPath,spectPath)
+    return "done"
+    # files = os.listdir(spectPath)
+    # files = [file for file in files if file.endswith(".png")]
 
-    files = os.listdir(spectPath)
-    files = [file for file in files if file.endswith(".png")]
+    # prediction_percentage = []
+    # predicted_class = []
 
-    prediction_percentage = []
-    predicted_class = []
-
-    for file in files:
+    # for file in files:
         
-        imageFile = os.path.join(spectPath,file)
-        image = readImage(imageFile)
+    #     imageFile = os.path.join(spectPath,file)
+    #     image = readImage(imageFile)
 
-        percentage = model.predict(img)
-        prediction_percentage.append(percentage)
+    #     percentage = model.predict(img)
+    #     prediction_percentage.append(percentage)
     
-        index = model.predict_classes(img)
-        predicted_class.append(index)
+    #     index = model.predict_classes(img)
+    #     predicted_class = index
     
-    return predict_classes, prediction_percentage
+    # return predicted_class, prediction_percentage
 
 def batchMode():
     pass
@@ -81,3 +82,4 @@ def batchMode():
 # model.predict_generator(
 #   train_generator,
 #   steps=986/32)
+

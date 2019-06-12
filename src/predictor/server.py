@@ -12,8 +12,13 @@ while True:
     
     queryObject = json.loads(query)
 
-    if(queryObject.mode == "single"):
-        socket.send_string("SINGLE")
+    if(queryObject["mode"] == "single"):
+        songPath = queryObject["data"]
+        # predicted_class, prediction_percentage = predict.singleMode(songPath)
+
+        predicted_class = predict.singleMode(songPath)
+        socket.send_string(predicted_class)
+        # socket.send_string(songPath)
     else:
         socket.send_string("BATCH")
 
