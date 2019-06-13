@@ -8,7 +8,7 @@
             <div class="status-bar">
 
             </div>
-            <div class="toggle-button">
+            <!-- <div class="toggle-button">
                 <div class="switch" id="toggle">
                     <label>
                         SINGLE
@@ -17,7 +17,7 @@
                         BATCH
                     </label>
                 </div>
-            </div>
+            </div> -->
         </footer>
     </div>
 </template>
