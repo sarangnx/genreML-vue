@@ -37,6 +37,7 @@ export default {
 <style scoped>
 #content{
     height: 100%;
+    -webkit-user-select: none;
 }
 
 #wrapper{
