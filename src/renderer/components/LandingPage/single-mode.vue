@@ -35,7 +35,7 @@
         <div class="classify-button" >
             <button class="waves-effect waves-light btn"  @click="classify"><i class="material-icons right">play_arrow</i>CLASSIFY</button>
         </div>
-        <div class="results" v-if="showResults">
+        <div class="results" v-show="showResults">
             <button id="closeDisplay" @click="showResults = false">
                 <i class="material-icons">close</i>
             </button>
@@ -49,9 +49,9 @@
                         <span class="songGenre"><b>Genre :</b> {{predicted_genre}}</span>
                     </div>
                 </div>
-                <!-- <div id="Graphs" >
-                    <canvas id="grpahSpace" ref="grpahSpace"></canvas>
-                </div> -->
+                <div id="Graphs" >
+                    <canvas id="graphSpace" ref="graphSpace" height="200"></canvas>
+                </div>
             </div>
         </div>
     </div>
@@ -208,29 +208,31 @@ export default {
                 this.showResults = true;
                 this.songData = songInfo;
                 this.predicted_genre = data.predicted_class;
+                // this.graphData = data
                 this.plotGraph(data);
                 console.log(data);
                 console.log(songInfo);
             });
         },
         plotGraph(data){
-            // let ctx = document.getElementById('grpahSpace');
-            let ctx = this.$refs.graphspace
-console.log(ctx)
-  /*          var myChart = new Chart(ctx, {
+            let ctx = document.getElementById('graphSpace');
+            let myChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                    labels: Object.keys(data.prediction_percentage),
                     datasets: [{
-                        label: '# of Votes',
-                        data: [12, 19, 3, 5, 2, 3],
+                        data: Object.values(data.prediction_percentage),
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',
                             'rgba(54, 162, 235, 0.2)',
                             'rgba(255, 206, 86, 0.2)',
                             'rgba(75, 192, 192, 0.2)',
                             'rgba(153, 102, 255, 0.2)',
-                            'rgba(255, 159, 64, 0.2)'
+                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
                         ],
                         borderColor: [
                             'rgba(255, 99, 132, 1)',
@@ -238,22 +240,23 @@ console.log(ctx)
                             'rgba(255, 206, 86, 1)',
                             'rgba(75, 192, 192, 1)',
                             'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)'
+                            'rgba(255, 159, 64, 1)',
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
                         ],
                         borderWidth: 1
                     }]
                 },
                 options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }]
+                    title: {
+                        display: false,
+                    },legend: {
+                        display: false,
                     }
                 }
             });
-*/
 
         }
     },
@@ -530,5 +533,7 @@ button > * {
 #Graphs{
     height: 100%;
     width: 60%;
+    display: flex;
+    align-items: center;
 }
 </style>
