@@ -93,14 +93,12 @@ ipcMain.on('mode:single', (event,data) => {
 });
 
 client.on('message', (data) => {
-    data = JSON.parse(data)
-    let predicted_class = data.predicted_class;
-    let prediction_percentage = data.prediction_percentage;
-    
-    Object.keys(prediction_percentage).map(function(key, index) {
-        prediction_percentage[key] = prediction_percentage[key].toFixed(2);
+    data = JSON.parse(data);
+
+    Object.keys(data.prediction_percentage).map(function(key, index) {
+        data.prediction_percentage[key] = data.prediction_percentage[key].toFixed(2);
     });
-    console.log(predicted_class);
-    console.log(prediction_percentage);
+    
+    mainWindow.webContents.send('single:results',data);
 });
 
