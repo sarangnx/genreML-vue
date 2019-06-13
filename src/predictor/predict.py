@@ -1,11 +1,11 @@
 from keras.models import load_model
 import cv2
 import numpy as np
-import sys
 import os
 import spectrogram as sp
-import shutil
+from shutil import rmtree
 import threading
+from statistics import mode
 
 # modelPath = os.path.abspath("/src/predictor/model.h5")
 modelPath = "src/predictor/model.h5"
@@ -31,7 +31,7 @@ spectPath = "/tmp/genre/spectrogram"
 def folders():
     # DELETE ALL DIRECTORIES
     if os.path.exists("/tmp/genre"):
-        shutil.rmtree("/tmp/genre")
+        rmtree("/tmp/genre")
 
     # CREATE DIRECTORIES
     os.makedirs(cropPath)    
@@ -56,7 +56,7 @@ def singleMode(songFile):
     files = os.listdir(spectPath)
     files = [file for file in files if file.endswith(".png")]
 
-    prediction_percentage = []
+    prediction_percentage = np.zeros((1,10))
     predicted_class = []
 
     for file in files:
@@ -65,12 +65,14 @@ def singleMode(songFile):
         image = readImage(imageFile)
 
         percentage = model.predict(image)
-        prediction_percentage.append(percentage.flatten().tolist())
+        prediction_percentage = np.add(prediction_percentage,percentage)
     
         index = model.predict_classes(image)
         predicted_class.append(np.asscalar(index))
     
-    return predicted_class, prediction_percentage
+    prediction_percentage = prediction_percentage * 10
+    predicted_class = mode(predicted_class) 
+    return predicted_class, prediction_percentage.flatten().tolist()
 
 def batchMode():
     pass
