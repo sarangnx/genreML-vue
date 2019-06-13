@@ -95,9 +95,9 @@ def convertToSpectrogram(inpath,outpath):
 
     for song in files:
         
-        plt.figure(figsize=[5,5],frameon=False)
+        plt.figure(figsize=[5,5],facecolor="none")
         plt.axis("off")
-        plt.axes([0., 0., 1., 1.], frameon=False, xticks=[], yticks=[])
+        plt.axes([0., 0., 1., 1.], facecolor="none", xticks=[], yticks=[])
 
         songfile = os.path.join(inpath,song)
         sig, fs = librosa.load(songfile, mono=True)
@@ -111,7 +111,7 @@ def convertToSpectrogram(inpath,outpath):
             # If genre folder doesn't exist create one.
             os.makedirs(outpath)
 
-        plt.savefig(outfile, bbox_inches=None, pad_inches=0,frameon=None)
+        plt.savefig(outfile, bbox_inches=None, pad_inches=0,facecolor="none")
         plt.close()
 
 # Unwanted 4th file is created for some songs
