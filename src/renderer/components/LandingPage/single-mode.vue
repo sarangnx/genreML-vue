@@ -20,11 +20,12 @@
                     <i class="material-icons">folder</i>
                     <label>{{ item.name | trim(10) }}</label>
                 </button>
-                <button v-for="item in songs" 
+                <button v-for="(item,index) in songs" 
                         v-bind:key="item.id"
                         v-bind:title="item.title || item.filename"
                         @click.self="toggleSelect($event)"
-                        v-bind:data-path="item.path">
+                        v-bind:data-path="item.path"
+                        v-bind:data-index="index">
                     <img v-if="item.picture[0]" v-bind:src="retimage(item.picture[0].data,item.picture[0].format)" />
                     <i class="material-icons" v-else>music_note</i>
                     <label>{{ item.title | trim(10) }}</label>
@@ -32,10 +33,21 @@
             </div>
         </div>
         <div class="classify-button" >
-            <div id="output">
-
-            </div>
             <button class="waves-effect waves-light btn"  @click="classify"><i class="material-icons right">play_arrow</i>CLASSIFY</button>
+        </div>
+        <div class="results">
+            <div id="closeDisplay">
+                <button>
+                    <i class="material-icons">close</i>
+                </button>
+            </div>
+            <div id="display">
+                <div id="songInfo">
+                </div>
+                <div id="Graphs">
+                    <canvas id="grpahSpace"></canvas>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -49,6 +61,7 @@ const path = require('path');
 const mm = require('musicmetadata');
 const readChunk = require('read-chunk');
 const fileType = require('file-type');
+const chart = require('chart.js');
 
 export default {
     name: 'single-mode',
@@ -167,6 +180,9 @@ export default {
                 
             }
         },
+        getSongInfo(index){
+            return this.songsArray[index];
+        },
         classify(){
             if(!this.selected){
                 return;
@@ -174,10 +190,57 @@ export default {
 
             let el = this.selected;
             let songpath = el.getAttribute('data-path');
-
-            let output = document.getElementById('output');
+            
+            let index = el.getAttribute('data-index');
+            let songInfo = this.getSongInfo(index);
 
             ipcRenderer.send('mode:single',songpath);
+
+            ipcRenderer.on('single:results', (event, data) => {
+                this.plotGraph(data,songInfo);
+            })
+        },
+        plotGraph(data,songInfo){
+            let ctx = document.getElementById('grpahSpace');
+
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                    datasets: [{
+                        label: '# of Votes',
+                        data: [12, 19, 3, 5, 2, 3],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+
+
 
         }
     },
@@ -349,5 +412,55 @@ button > * {
     display: flex;
     align-items: center;
     color:white;
+}
+
+.results{
+    position: fixed;
+    z-index: 999;
+    top: 10%;
+    left: 10%;
+    height: 70%;
+    width: 80%;
+    background: rgba(43, 43, 43, 0.70);
+    border: 2px solid rgba(255, 255, 255, 0.30);
+    box-shadow: 0px 0px 10px 2px black;
+}
+/**
+ * Close Button of Pop up Window
+ */
+#closeDisplay{
+    position: absolute;
+    top: 2%;
+    right: 2%;
+}
+
+#closeDisplay button{
+    height: 40px;
+    width: 40px;
+    background:none;
+    border:none;
+    outline:none;
+    padding:0px;
+}
+
+#closeDisplay button:hover{
+    background: rgba(183, 183, 183, 0.5);
+    box-shadow: 0px 0px 3px 0px black;
+}
+
+#closeDisplay button:active{
+    background: rgba(183, 183, 183, 0.3);
+    box-shadow: 0px 0px 3px 0px inset;
+}
+
+#closeDisplay button > .material-icons{
+    width:40px;
+    height:40px;
+    padding: 5px;
+    font-size: 30px;
+}
+
+#closeDisplay button:active > .material-icons {
+    transform: translateY(1px);
 }
 </style>
