@@ -5,7 +5,7 @@ import os
 import spectrogram as sp
 from shutil import rmtree
 import threading
-from statistics import mode
+from collections import Counter
 
 # modelPath = os.path.abspath("/src/predictor/model.h5")
 modelPath = "src/predictor/model.h5"
@@ -71,7 +71,10 @@ def singleMode(songFile):
         predicted_class.append(np.asscalar(index))
     
     prediction_percentage = prediction_percentage * 10
-    predicted_class = mode(predicted_class) 
+    most_repeated = Counter(predicted_class).most_common(1)
+    for genre,count in most_repeated:
+        predicted_class = genre
+
     return predicted_class, prediction_percentage.flatten().tolist()
 
 def batchMode():
