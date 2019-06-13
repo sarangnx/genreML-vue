@@ -35,18 +35,23 @@
         <div class="classify-button" >
             <button class="waves-effect waves-light btn"  @click="classify"><i class="material-icons right">play_arrow</i>CLASSIFY</button>
         </div>
-        <div class="results">
-            <div id="closeDisplay">
-                <button>
-                    <i class="material-icons">close</i>
-                </button>
-            </div>
+        <div class="results" v-if="showResults">
+            <button id="closeDisplay" @click="showResults = false">
+                <i class="material-icons">close</i>
+            </button>
             <div id="display">
-                <div id="songInfo">
+                <div id="songInfo" v-if="songData">
+                    <img v-if="songData.picture[0]" 
+                         v-bind:src="retimage(songData.picture[0].data,songData.picture[0].format)" />
+                    <i class="material-icons" v-else>music_note</i>
+                    <div class="songDetails">
+                        <span class="songTitle">{{ songData.title || songData.filename }}</span>
+                        <span class="songGenre"><b>Genre :</b> {{predicted_genre}}</span>
+                    </div>
                 </div>
-                <div id="Graphs">
-                    <canvas id="grpahSpace"></canvas>
-                </div>
+                <!-- <div id="Graphs" >
+                    <canvas id="grpahSpace" ref="grpahSpace"></canvas>
+                </div> -->
             </div>
         </div>
     </div>
@@ -70,7 +75,10 @@ export default {
             foldersArray: null,
             songsArray: null,
             pwd: null,
-            selectedList: null
+            selectedList: null,
+            showResults: false,
+            songData: null,
+            predicted_genre: null
         }   
     },
     computed:{
@@ -197,13 +205,19 @@ export default {
             ipcRenderer.send('mode:single',songpath);
 
             ipcRenderer.on('single:results', (event, data) => {
-                this.plotGraph(data,songInfo);
-            })
+                this.showResults = true;
+                this.songData = songInfo;
+                this.predicted_genre = data.predicted_class;
+                this.plotGraph(data);
+                console.log(data);
+                console.log(songInfo);
+            });
         },
-        plotGraph(data,songInfo){
-            let ctx = document.getElementById('grpahSpace');
-
-            var myChart = new Chart(ctx, {
+        plotGraph(data){
+            // let ctx = document.getElementById('grpahSpace');
+            let ctx = this.$refs.graphspace
+console.log(ctx)
+  /*          var myChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
                     labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
@@ -239,8 +253,7 @@ export default {
                     }
                 }
             });
-
-
+*/
 
         }
     },
@@ -421,46 +434,101 @@ button > * {
     left: 10%;
     height: 70%;
     width: 80%;
-    background: rgba(43, 43, 43, 0.70);
+    background: rgba(0, 0, 0, 0.95);
     border: 2px solid rgba(255, 255, 255, 0.30);
     box-shadow: 0px 0px 10px 2px black;
 }
 /**
  * Close Button of Pop up Window
  */
+
 #closeDisplay{
+    z-index:9999;
     position: absolute;
     top: 2%;
     right: 2%;
-}
-
-#closeDisplay button{
-    height: 40px;
-    width: 40px;
-    background:none;
+    height: 20px;
+    width: 20px;
+    background:red;
     border:none;
     outline:none;
     padding:0px;
 }
 
-#closeDisplay button:hover{
+#closeDisplay:hover{
     background: rgba(183, 183, 183, 0.5);
     box-shadow: 0px 0px 3px 0px black;
 }
 
-#closeDisplay button:active{
+#closeDisplay:active{
     background: rgba(183, 183, 183, 0.3);
     box-shadow: 0px 0px 3px 0px inset;
 }
 
-#closeDisplay button > .material-icons{
-    width:40px;
-    height:40px;
-    padding: 5px;
-    font-size: 30px;
+#closeDisplay > .material-icons{
+    width: 20px;
+    height: 20px;
+    padding: 2.5px;
+    font-size: 15px;
+    color: #fff;
 }
 
 #closeDisplay button:active > .material-icons {
     transform: translateY(1px);
+}
+
+#display{
+    position: relative;
+    height:100%;
+    width: 100%;
+    display: flex;
+}
+
+#songInfo{
+    height: 100%;
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+#songInfo img{
+    width: 80%;
+}
+
+#songInfo i {
+    color: white;
+    font-size: 50px;
+}
+.songDetails{
+    height: 30%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    text-align:center;
+}
+
+.songTitle{
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+}
+
+.songGenre{
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.songGenre b{
+    color: #40ff5b;
+}
+
+
+#Graphs{
+    height: 100%;
+    width: 60%;
 }
 </style>

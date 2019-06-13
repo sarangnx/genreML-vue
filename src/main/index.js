@@ -89,6 +89,7 @@ ipcMain.on('mode:single', (event,data) => {
         mode: 'single',
         data: data
     }
+    console.log(data)
     client.send(JSON.stringify(req));
 });
 
