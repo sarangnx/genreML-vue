@@ -14,7 +14,14 @@ while True:
 
     if(queryObject["mode"] == "single"):
         songPath = queryObject["data"]
-        predicted_class, prediction_percentage = predict.singleMode(songPath)
+        index, percentages = predict.singleMode(songPath)
+        
+        # Assign Genre Name
+        predicted_class = predict.classes[index]
+        
+        prediction_percentage = {}
+        for i in range(len(percentages)):
+            prediction_percentage[predict.classes[i]] = percentages[i]
 
         data = {
             "predicted_class" : predicted_class, 
@@ -22,10 +29,6 @@ while True:
         }
 
         socket.send_string(json.dumps(data))
-        # socket.send_string(songPath)
+
     else:
         socket.send_string("BATCH")
-
-    # print(json.dumps(query))
-    #  Send reply back to client
-    # socket.send_string(json.dumps(query))
